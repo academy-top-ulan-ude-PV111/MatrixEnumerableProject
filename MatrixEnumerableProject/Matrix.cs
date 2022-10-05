@@ -69,17 +69,50 @@ namespace MatrixEnumerableProject
         int row, col;
 
         int rows, columns;
-        public MatrixVerticalEnumerator(int[,] items) => this.items = items;
-        public object Current => throw new NotImplementedException();
+        public MatrixVerticalEnumerator(int[,] items)
+        {
+            this.items = items;
+            row = -1;
+            col = 0;
+
+            rows = this.items.GetUpperBound(0) + 1;
+            columns = this.items.Length / rows;
+        }
+        public object Current
+        {
+            get
+            {
+                if (row == -1 || row >= rows)
+                    throw new IndexOutOfRangeException();
+                return items[row, col];
+            }
+        }
 
         public bool MoveNext()
         {
-            throw new NotImplementedException();
+            if(row < rows - 1)
+            {
+                row++;
+                return true;
+            }
+            else
+            {
+                if (col < columns - 1)
+                {
+                    col++;
+                    row = 0;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
         }
 
         public void Reset()
         {
-            throw new NotImplementedException();
+            row = -1;
+            col = 0;
         }
     }
     public class Matrix : IEnumerable
